@@ -96,6 +96,12 @@ Page({
       url: `../postDetail/postDetail?id=${e.currentTarget.dataset.id}`
     })
   },
+  // 切换城市
+  goChooseCity() {
+    wx.navigateTo({
+      url: '../chooseCity/chooseCity'
+    })
+  },
   // 输入框输入
   keywordChange (e) {
     if (goodJobTimer) {

@@ -61,12 +61,13 @@ Page({
   },
   miniSalaryChange(e) {
     this.setData({
-      mini_salary: e.detail.value
+      mini_salary: Number(e.detail.value)
     })
   },
   maxSalaryChange(e) {
+    console.log(333, e)
     this.setData({
-      max_salary: e.detail.value
+      max_salary: Number(e.detail.value)
     })
   },
   // 进入项目详情
@@ -163,7 +164,7 @@ Page({
   },
   // 获取项目
   getList() {
-    console.log()
+    console.log(55, this.data)
     this.setData({
       loading: true
     })
@@ -182,8 +183,14 @@ Page({
       },
       method: 'POST',
       success: (res) => {
+        console.log(res)
+        if (res.statusCode !== 200) {
+          this.setData({
+            loading: false
+          })
+          return
+        }
         let listData = res.data.bizobj.data.project_list
-        console.log(listData)
         if (listData.length > 0) {
           listData.forEach((el, index) => {
             el['mini_salary1'] = Math.round(el.mini_salary / 1000) + 'k'

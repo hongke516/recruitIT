@@ -77,6 +77,7 @@ Page({
   },
   // 名字改变
   nameChange (e) {
+    console.log(4, e)
     this.setData({
       name: e.detail.value
     })
@@ -85,6 +86,18 @@ Page({
   phoneChange(e) {
     this.setData({
       phone: e.detail.value
+    })
+  },
+  // email改变
+  emailChange(e) {
+    this.setData({
+      email: e.detail.value
+    })
+  },
+  // 岗位改变
+  workChange(e) {
+    this.setData({
+      work: e.detail.value
     })
   },
   // 添加标签
@@ -189,6 +202,7 @@ Page({
   },
   // 保存
   saveInfo () {
+    console.log(333, this.data)
     let name = this.data.name
     let xingbie = this.data.xingbie.id
     let workTime = this.data.workTime
