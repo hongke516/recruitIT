@@ -83,7 +83,7 @@
     </view>
     <!-- 岗位信息 -->
     <view wx:if="{{ titleChoosed === 'quarters' }}">
-      <view class='itemWrap itemWrapTwo' wx:for="{{ quartersList }}" wx:key="" bindtap='goPostDetail'>
+      <view class='itemWrap itemWrapTwo' wx:for="{{ quartersList }}" wx:key="" bindtap='goPostDetail' data-id="{{ item.id }}">
         <view class='first'>
           <view class='title'>{{ item.name }}</view>
           <view class='money'>{{ item.mini_salary1 + '-' + item.max_salary1 + '/月' }}</view>

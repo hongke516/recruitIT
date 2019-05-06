@@ -22,6 +22,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(333, app.globalData)
     this.setData({
       userInfo: app.globalData.userInfo,
       userType: app.globalData.userType,
@@ -129,9 +130,9 @@ Page({
     })
   },
   // 岗位信息
-  goPostDetail() {
+  goPostDetail(e) {
     wx.navigateTo({
-      url: '../postDetail/postDetail'
+      url: `../postDetail/postDetail?id=${e.currentTarget.dataset.id}`
     })
   },
   // 项目信息

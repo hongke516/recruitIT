@@ -12,7 +12,9 @@ Page({
     authMask: false,
     noLocation: false,
     password: false,
-    passwordMask: false
+    passwordMask: false,
+    lat: '',
+    lng: ''
   },
   /**
    * 生命周期函数--监听页面加载
@@ -27,25 +29,26 @@ Page({
   },
   // 授权成功后添加用户信息
   addUserInfo(data) {
-    let obj = app.globalData.userInfo
+    let obj = app.globalData.userInfo || {}
     obj['avatar'] = data.avatarUrl
     obj['gender'] = data.gender
     obj['nickname'] = data.nickName
-    app.globalData.userInfo = obj
+    Object.assign(app.globalData.userInfo, obj)
     this.updateUserinfo()
   },
   // 更新用户信息
   updateUserinfo () {
     let data = app.globalData.userInfo
+    console.log(4555, data)
     wx.request({
       url: `${app.globalData.baseUrl}/User/updateUserInfo.html`,
       data: {
         sess_key: app.globalData.sess_key,
         nickname: data.nickname,
         avatar: data.avatar,
-        gender: data.gender,
-        lat: data.lat,
-        lng: data.lng
+        gender: (data.gender),
+        lat: (data.lat),
+        lng: (data.lng)
       },
       method: 'POST',
       success: (res) => {
@@ -71,7 +74,7 @@ Page({
           password: true
         })
         this.initLocation()
-        this.initUserInfo()
+        // this.initUserInfo()
       } else {
         // 不需要强制授权，去登录页面
         this.setData({
@@ -81,7 +84,7 @@ Page({
     } else {
       // 没有密码必须要强制授权
       this.initLocation()
-      this.initUserInfo()
+      // this.initUserInfo()
     }
   },
   // 打开登录提示
@@ -96,7 +99,15 @@ Page({
       type: 'wgs84',
       success: (res) => {
         console.log('位置授权成功回调', res)
-        this.getCityInfo(res.latitude, res.longitude)
+        this.setData({
+          lat: res.latitude,
+          lng: res.longitude
+        })
+        let obj = app.globalData.userInfo || {}
+        obj['lat'] = res.latitude
+        obj['lng'] = res.longitude
+        Object.assign(app.globalData.userInfo, obj)
+        this.initUserInfo()
       },
       fail: (res) => {
         this.setData({
@@ -164,15 +175,17 @@ Page({
       },
       method: 'POST',
       success: (res) => {
-        let data = res.data.bizobj.location_info
-        let obj = app.globalData.userInfo
+        let data = res.data.bizobj
+        ? res.data.bizobj.location_info
+        : {}
+        let obj = app.globalData.userInfo || {}
         console.log(obj)
         console.log(data)
         obj['city_code'] = data.city_code
         obj['city_name'] = data.city_name
         obj['lat'] = lat
         obj['lng'] = lng
-        app.globalData.userInfo = obj
+        Object.assign(app.globalData.userInfo, obj)
       },
       fail: (res) => {
         wx.showToast({
